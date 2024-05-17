@@ -8,6 +8,7 @@ Data format (sample):
 import json
 from torch.utils.data import Dataset
 from random import shuffle
+import re
 
 """
 This class should preprocess the data by splitting it into:
@@ -61,7 +62,7 @@ class Data(Dataset):
         prompt = item["text"]
         # process the prompt (adjust for title, post, etc.)
         # TODO: decide whether this is necessary
-        # prompt = re.sub(r"TITLE:|POST:|COMMENT:|SENTENCE:|\"|\\", "", prompt)
+        prompt = re.sub(r"TITLE:|POST:|COMMENT:|SENTENCE:|\"|\\", "", prompt)
  
         labels = item["labels"]
         formatted_labels = []
