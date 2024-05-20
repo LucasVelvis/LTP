@@ -29,6 +29,10 @@ class Label:
 
     def __repr__(self) -> str:
         return self.name + " (" + str(self.start) + ", " + str(self.end) + ")"
+    
+    def indices(self) -> tuple:
+        """ Return the indices in range format."""
+        return set(range(self.start, self.end + 1))
 
 class Data(Dataset):
     """

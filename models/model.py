@@ -1,6 +1,7 @@
 
 from abc import abstractmethod
 from typing import List
+import json
 
 
 class Model:
@@ -20,5 +21,11 @@ class Model:
         pass
 
     def write_response(self, prompt: str, labels: List[str], prompting_technique: str):
+        data = {
+            "text": prompt.text,
+            "response": self.latest_response,
+            "labels": labels
+        }
+        json_data = json.dumps(data)
         with open(f"data/responses/{self.name}_{prompting_technique}.jsonl", "a") as f:
-            f.write(f'{{"text": "{prompt.text}", "response": "{self.latest_response}", "labels": {labels}}}\n')
+            f.write(json_data + "\n")

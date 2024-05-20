@@ -3,12 +3,13 @@ from prompting_techniques.zero_shot import ZeroShot
 from prompting_techniques.few_shot import FewShot
 from models.test import TestModel
 from experiment import Experiment
+from evaluation import EvaluationFrameWork
 import sys
 
 if __name__ == "__main__":
     # Default to one-shot if no argument is given
     if len(sys.argv) == 1:
-        sys.argv.append("zero_shot")
+        sys.argv.append("complete")
 
     # Load the data
     data = Data()
@@ -26,7 +27,17 @@ if __name__ == "__main__":
         print(prompt)
         print(zero_shot_prompt)
     elif sys.argv[1] == "experiment":
+        # Just run the experiment to get the data
         model = TestModel
         experiment = Experiment(data, models=[model])
         experiment.run()
+    elif sys.argv[1] == "complete":
+        # Run the experiment and evaluate the models
+        model = TestModel
+        experiment = Experiment(data, models=[model])
+        experiment.run()
+        
+        evaluation_framework = EvaluationFrameWork(models=[model])
+        evaluation_framework.evaluate()
+        evaluation_framework.plot()
 
