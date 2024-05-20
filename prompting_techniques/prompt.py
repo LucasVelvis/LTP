@@ -8,7 +8,8 @@ class Prompt:
     It has a standard text format, which is a string. And had subclasses, that implement
     separate prompting techniques.
     """
-    def __init__(self, text: str, data: Data):
+    def __init__(self, name, text: str, data: Data):
+        self.name = name
         self.text = text
         self.data = data
 

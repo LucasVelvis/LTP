@@ -1,9 +1,15 @@
 from data import Data
-from prompting_techniques.one_shot import OneShot
+from prompting_techniques.zero_shot import ZeroShot
 from prompting_techniques.few_shot import FewShot
+from models.test import TestModel
+from experiment import Experiment
 import sys
 
 if __name__ == "__main__":
+    # Default to one-shot if no argument is given
+    if len(sys.argv) == 1:
+        sys.argv.append("zero_shot")
+
     # Load the data
     data = Data()
 
@@ -14,8 +20,13 @@ if __name__ == "__main__":
         few_shot_prompt = FewShot(prompt, data)
         print(prompt)
         print(few_shot_prompt)
-    elif sys.argv[1] == "one_shot":
-        # Get a one-shot prompt
-        one_shot_prompt = OneShot(prompt, data)
+    elif sys.argv[1] == "zero_shot":
+        # Get a zero-shot prompt
+        zero_shot_prompt = ZeroShot(prompt, data)
         print(prompt)
-        print(one_shot_prompt)
+        print(zero_shot_prompt)
+    elif sys.argv[1] == "experiment":
+        model = TestModel
+        experiment = Experiment(data, models=[model])
+        experiment.run()
+

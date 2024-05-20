@@ -18,7 +18,7 @@ This class should preprocess the data by splitting it into:
     - end index
     - label name
 """
-class Label():
+class Label:
     """
     Simple class to represent a label in the dataset.
     """
@@ -62,7 +62,7 @@ class Data(Dataset):
         prompt = item["text"]
         # process the prompt (adjust for title, post, etc.)
         # TODO: decide whether this is necessary
-        prompt = re.sub(r"TITLE:|POST:|COMMENT:|SENTENCE:|\"|\\", "", prompt)
+        # prompt = re.sub(r"TITLE:|POST:|COMMENT:|SENTENCE:|\"|\\", "", prompt)
  
         labels = item["labels"]
         formatted_labels = []

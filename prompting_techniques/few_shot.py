@@ -11,7 +11,7 @@ class FewShot(Prompt):
     - data: Data, the data object
     """
     def __init__(self, text: str, data: Data, num_examples: int = 5):
-        super().__init__(text, data)
+        super().__init__("few-shot", text, data)
         self.num_examples = num_examples
 
     def get_prompt_context(self) -> str:

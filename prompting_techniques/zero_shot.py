@@ -1,14 +1,16 @@
 from prompting_techniques.prompt import Prompt
 
-class OneShot(Prompt):
+class ZeroShot(Prompt):
     """
-    The one-shot prompt technique.
+    The Zero-shot prompt technique.
 
     parameters:
     - text: str, the text of the prompt
     - data: Data, the data object
     """
+    def __init__(self, text: str, data):
+        super().__init__("zero-shot", text, data)
 
     def get_prompt_context(self) -> str:
-        """ One-shot prompt context (is nothing)"""
+        """ Zero-shot prompt context (is nothing)"""
         return self.text

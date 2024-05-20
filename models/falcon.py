@@ -1,10 +1,14 @@
+from models.model import Model
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-class FalconModel:
+class Falcon(Model):
+    """
+    This class is used to handle the Falcon model.
+
+    No parameters are needed.
+    """
     def __init__(self):
-        """
-        Initializes both the tokenizer and model.
-        """
+        super().__init__("Falcon")
         model_name = "tiiuae/falcon-7b-instruct"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
@@ -20,11 +24,12 @@ class FalconModel:
         output = self.model.generate(input, max_length=50)
 
         # Decode and return the output
-        return self.tokenizer.decode(output[0], skip_special_tokens=True)
+        self.latest_response = self.tokenizer.decode(output[0], skip_special_tokens=True)
+        return self.latest_response
 
 # Just a quick test (takes too long to run)
 if __name__ == "__main__":
-    handler = FalconModel()
+    handler = Falcon()
     prompt = "What's up?"
     response = handler.generate_response(prompt)
     print("Response:", response)
