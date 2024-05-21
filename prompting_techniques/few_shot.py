@@ -14,7 +14,7 @@ class FewShot(Prompt):
     - num_examples: int, the number of examples to show (Optional, default is 5)
     """
     def __init__(self, text: str, data: Data, model: Model, num_examples: int = 5):
-        super().__init__("few-shot", text, data, model)
+        super().__init__("Few-Shot", text, data, model)
         self.num_examples = num_examples
 
     def get_prompt_context(self) -> str:

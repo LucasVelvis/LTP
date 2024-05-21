@@ -45,10 +45,10 @@ class Experiment:
                 # Loop over data
                 for text, labels in self.data:
                     # Copy data to avoid modifying the original
-                    data = self.data.copy()
+                    # data = self.data.copy()
 
                     # Generate prompt
-                    prompt = prompting_technique(text=text, data=data, model=model)
+                    prompt = prompting_technique(text=text, data=self.data, model=model)
                    
                     # Pass to model
                     response = model.generate_response(prompt)
