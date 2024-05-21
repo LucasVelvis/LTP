@@ -16,17 +16,17 @@ class AutomaticCoT(Prompt):
     - level: int, the level of fallacies to cluster the data into (1 or 2) (Optional, default is 2)
     """
     def __init__(self, text: str, data: Data, model: Model, level: int = 2):
-        super().__init__("automatic-cot", text, data, model)
+        super().__init__("Automatic CoT", text, data, model)
         self.level = level
         self.clusters = LEVEL_1_CLUSTERS if self.level == 1 else LEVEL_2_CLUSTERS
         self.clustered_data = {cluster: [] for cluster in self.clusters}
-        self.cluster_data()
-        self.demonstrations = self.generate_demonstrations()
 
     def get_prompt_context(self) -> str:
         """ 
         Automatic CoT prompt context is some examples from the data with chain of thought reasoning.
         """
+        self.cluster_data()
+        self.demonstrations = self.generate_demonstrations()
         examples = []
         for cluster, demonstrations in self.demonstrations.items():
             if not demonstrations:

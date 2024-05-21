@@ -11,7 +11,7 @@ class ZeroShot(Prompt):
     - model: Model, the model object
     """
     def __init__(self, text: str, data, model: Model):
-        super().__init__("zero-shot", text, data, model)
+        super().__init__("Zero-Shot", text, data, model)
 
     def get_prompt_context(self) -> str:
         """ Zero-shot prompt context (is nothing)"""

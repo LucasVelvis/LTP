@@ -3,7 +3,7 @@ from prompting_techniques.zero_shot import ZeroShot
 from prompting_techniques.few_shot import FewShot
 from prompting_techniques.automatic_cot import AutomaticCoT
 from prompting_techniques.generated_knowledge import GeneratedKnowledge
-from models.test import TestModel
+from models.test import TestModel, TestModel2, TestModel3
 from experiment import Experiment
 from evaluation import EvaluationFrameWork
 import sys
@@ -47,10 +47,12 @@ if __name__ == "__main__":
     elif sys.argv[1] == "complete":
         # Run the experiment and evaluate the models
         model = TestModel
-        experiment = Experiment(data, models=[model])
+        model_2 = TestModel2
+        model_3 = TestModel3
+        experiment = Experiment(data, models=[model, model_2, model_3])
         experiment.run()
         
-        evaluation_framework = EvaluationFrameWork(models=[model])
+        evaluation_framework = EvaluationFrameWork(models=[model, model_2, model_3])
         evaluation_framework.evaluate()
         evaluation_framework.plot()
 
