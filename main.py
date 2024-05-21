@@ -2,6 +2,7 @@ from data import Data
 from prompting_techniques.zero_shot import ZeroShot
 from prompting_techniques.few_shot import FewShot
 from prompting_techniques.automatic_cot import AutomaticCoT
+from prompting_techniques.generated_knowledge import GeneratedKnowledge
 from models.test import TestModel
 from experiment import Experiment
 from evaluation import EvaluationFrameWork
@@ -33,6 +34,11 @@ if __name__ == "__main__":
         auto_cot_prompt = AutomaticCoT(prompt, data, model)
         print(prompt)
         print(auto_cot_prompt)
+    elif sys.argv[1] == "gen_knowledge":
+        # Get a generated knowledge prompt
+        gen_knowledge_prompt = GeneratedKnowledge(prompt, data, model)
+        print(prompt)
+        print(gen_knowledge_prompt)
     elif sys.argv[1] == "experiment":
         # Just run the experiment to get the data
         model = TestModel
