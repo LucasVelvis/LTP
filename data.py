@@ -8,6 +8,7 @@ Data format (sample):
 import json
 from torch.utils.data import Dataset
 from random import shuffle
+import re
 
 """
 This class should preprocess the data by splitting it into:
@@ -17,7 +18,7 @@ This class should preprocess the data by splitting it into:
     - end index
     - label name
 """
-class Label():
+class Label:
     """
     Simple class to represent a label in the dataset.
     """
@@ -28,6 +29,10 @@ class Label():
 
     def __repr__(self) -> str:
         return self.name + " (" + str(self.start) + ", " + str(self.end) + ")"
+    
+    def indices(self) -> tuple:
+        """ Return the indices in range format."""
+        return set(range(self.start, self.end + 1))
 
 class Data(Dataset):
     """
