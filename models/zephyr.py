@@ -1,16 +1,16 @@
-from models.model import Model
-from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch
+from transformers import pipeline
 
 
-class Falcon(Model):
+class Zephyr(Model):
     """
     This class is used to handle the Falcon model.
 
     No parameters are needed.
     """
     def __init__(self):
-        super().__init__("Falcon")
-        model_name = "tiiuae/falcon-7b-instruct"
+        super().__init__("Zephyr")
+        model_name = "HuggingFaceH4/zephyr-7b-beta"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
 
