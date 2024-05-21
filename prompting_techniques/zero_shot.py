@@ -1,4 +1,5 @@
 from prompting_techniques.prompt import Prompt
+from models.model import Model
 
 class ZeroShot(Prompt):
     """
@@ -7,9 +8,10 @@ class ZeroShot(Prompt):
     parameters:
     - text: str, the text of the prompt
     - data: Data, the data object
+    - model: Model, the model object
     """
-    def __init__(self, text: str, data):
-        super().__init__("zero-shot", text, data)
+    def __init__(self, text: str, data, model: Model):
+        super().__init__("zero-shot", text, data, model)
 
     def get_prompt_context(self) -> str:
         """ Zero-shot prompt context (is nothing)"""

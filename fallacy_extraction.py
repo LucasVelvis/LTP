@@ -89,6 +89,71 @@ COMBINED_LEVEL_2 = {
     "tu quoque": ["quoque"],
 }
 
+LEVEL_1_CLUSTERS = [
+    "nothing",
+    "emotion",
+    "logic",
+    "credibility",
+]
+
+LEVEL_2_TO_LEVEL_1 = {
+    "nothing": "nothing",
+    "appeal to positive emotion": "emotion",
+    "appeal to anger": "emotion",
+    "appeal to fear": "emotion",
+    "appeal to pity": "emotion",
+    "Appeal to Ridicule": "emotion",
+    "appeal to worse problems": "emotion",
+    "causal oversimplification": "logic",
+    "circular reasoning": "logic",
+    "equivocation": "logic",
+    "false analogy": "logic",
+    "false causality": "logic",
+    "false dilemma": "logic",
+    "hasty generalization": "logic",
+    "slippery slope": "logic",
+    "straw man": "logic",
+    "fallacy of division": "logic",
+    "ad hominem": "credibility",
+    "ad populum": "credibility",
+    "appeal to (false) authority": "credibility",
+    "appeal to nature": "credibility",
+    "appeal to tradition": "credibility",
+    "guilt by association": "credibility",
+    "tu quoque": "credibility",
+}
+
+LEVEL_2_CLUSTERS = [
+    "non-fallacious",
+    "hasty generalization",
+    "causal oversimplification",
+    "Appeal to Ridicule",
+    "false dilemma",
+    "ad hominem",
+    "nothing",
+    "ad populum",
+    "straw man",
+    "false causality",
+    "false analogy",
+    "slippery slope",
+    "appeal to fear",
+    "appeal to nature",
+    "circular reasoning",
+    "appeal to (false) authority",
+    "appeal to worse problems",
+    "guilt by association",
+    "equivocation",
+    "appeal to tradition",
+    "appeal to anger",
+    "appeal to positive emotion",
+    "tu quoque",
+    "fallacy of division",
+    "appeal to pity",
+    "fallacy of relevance",
+    "intentional",
+    "appeal to emotion"
+]
+
 def extract_fallacies(text):
     """
     Extract fallacies from the given text. (based on the MAFALDA paper, which provided the dictionaries and the regex pattern)

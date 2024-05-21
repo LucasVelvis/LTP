@@ -38,14 +38,17 @@ class Experiment:
             print(f"Running experiment for model: {model.name}")
             for prompting_technique in self.prompting_techniques:
                 # Filler prompt to log and clear existing data
-                prompt = prompting_technique(text="Filler", data=self.data)
+                prompt = prompting_technique(text="Filler", data=self.data, model=model)
                 print(f"Running experiment {model.name} for prompting technique: {prompt.name}")
                 open(f"data/responses/{model.name}_{prompt.name}.jsonl", "w").close()
 
                 # Loop over data
                 for text, labels in self.data:
+                    # Copy data to avoid modifying the original
+                    data = self.data.copy()
+
                     # Generate prompt
-                    prompt = prompting_technique(text=text, data=self.data)
+                    prompt = prompting_technique(text=text, data=data, model=model)
                    
                     # Pass to model
                     response = model.generate_response(prompt)
