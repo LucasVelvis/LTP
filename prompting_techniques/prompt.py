@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from data import Data
+from models.model import Model
 
 
 class Prompt:
@@ -7,11 +8,19 @@ class Prompt:
     This is the prompt superclass.
     It has a standard text format, which is a string. And had subclasses, that implement
     separate prompting techniques.
+
+    Parameters:
+    - name: str, the name of the prompting technique
+    - text: str, the text of the prompt
+    - data: Data, the data object
+    - model: Model, the model object
     """
-    def __init__(self, name, text: str, data: Data):
+    def __init__(self, name, text: str, data: Data, model: Model = None):
         self.name = name
         self.text = text
         self.data = data
+        self.model = model
+        self.additional_info = ""
 
     def __repr__(self) -> str:
         return self.get_standard_format(self.text)
@@ -62,6 +71,7 @@ fallacy include:
 • intentional
 • appeal to emotion
 Sentence: "{text}"
+{self.additional_info}
 Output:
 """ 
         return standard_format

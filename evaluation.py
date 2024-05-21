@@ -37,13 +37,14 @@ class EvaluationFrameWork:
             model = model()
             for prompting_technique in self.prompting_techniques:
                 # Filler prompt to get the correct data
-                prompt = prompting_technique(text="Filler", data=self.gold_standard)
+                prompt = prompting_technique(text="Filler", data=self.gold_standard, model=model)
                 path = f"data/responses/{model.name}_{prompt.name}.jsonl"
                 try:
                     data = Data(data_path=path)
                 except FileNotFoundError:
                     print(f"Data for model: {model}, prompting technique: {prompting_technique} not found, skipping.")
                     continue
+                
                 for i in range(len(data)):
                     # G = Gold Standard labels, P = Predicted labels
                     _, P = data[i]

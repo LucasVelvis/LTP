@@ -1,6 +1,7 @@
 from data import Data
 from prompting_techniques.prompt import Prompt
 from random import shuffle
+from models.model import Model
 
 class FewShot(Prompt):
     """
@@ -9,9 +10,11 @@ class FewShot(Prompt):
     parameters:
     - text: str, the text of the prompt
     - data: Data, the data object
+    - model: Model, the model object
+    - num_examples: int, the number of examples to show (Optional, default is 5)
     """
-    def __init__(self, text: str, data: Data, num_examples: int = 5):
-        super().__init__("few-shot", text, data)
+    def __init__(self, text: str, data: Data, model: Model, num_examples: int = 5):
+        super().__init__("few-shot", text, data, model)
         self.num_examples = num_examples
 
     def get_prompt_context(self) -> str:
