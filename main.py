@@ -9,7 +9,7 @@ from evaluation import EvaluationFrameWork
 import sys
 
 if __name__ == "__main__":
-    # Default to one-shot if no argument is given
+    # Default to a complete run if no argument is given
     if len(sys.argv) == 1:
         sys.argv.append("complete")
 
@@ -46,6 +46,7 @@ if __name__ == "__main__":
         experiment.run()
     elif sys.argv[1] == "complete":
         # Run the experiment and evaluate the models
+        # TODO: Change this to use the actual models
         model = TestModel
         model_2 = TestModel2
         model_3 = TestModel3

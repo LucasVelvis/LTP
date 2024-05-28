@@ -191,5 +191,6 @@ class EvaluationFrameWork:
                 ax.bar_label(container, fmt="%.2f", label_type="edge")
 
         plt.tight_layout()
+        plt.savefig("data/Evaluation.png", dpi=300)
         plt.show()
 
