@@ -34,7 +34,6 @@ class Experiment:
         Runs the experiment for the chosen models and prompting techniques.
         """
         for model in self.models:
-            model = model()
             print(f"Running experiment for model: {model.name}")
             for prompting_technique in self.prompting_techniques:
                 # Filler prompt to log and clear existing data

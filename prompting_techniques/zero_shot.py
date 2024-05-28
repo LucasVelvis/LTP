@@ -1,6 +1,7 @@
 from prompting_techniques.prompt import Prompt
 from models.model import Model
 
+
 class ZeroShot(Prompt):
     """
     The Zero-shot prompt technique.

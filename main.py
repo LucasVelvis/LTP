@@ -3,10 +3,12 @@ from prompting_techniques.zero_shot import ZeroShot
 from prompting_techniques.few_shot import FewShot
 from prompting_techniques.automatic_cot import AutomaticCoT
 from prompting_techniques.generated_knowledge import GeneratedKnowledge
-from models.test import TestModel, TestModel2, TestModel3
+from models.test import RandomModel
+from models.falcon import Falcon
 from experiment import Experiment
 from evaluation import EvaluationFrameWork
 import sys
+
 
 if __name__ == "__main__":
     # Default to one-shot if no argument is given
@@ -15,7 +17,7 @@ if __name__ == "__main__":
 
     # Load the data
     data = Data()
-    model = TestModel()
+    model = RandomModel()
 
     prompt, label = data[0]
     
@@ -41,14 +43,14 @@ if __name__ == "__main__":
         print(gen_knowledge_prompt)
     elif sys.argv[1] == "experiment":
         # Just run the experiment to get the data
-        model = TestModel
+        model = RandomModel()
         experiment = Experiment(data, models=[model])
         experiment.run()
     elif sys.argv[1] == "complete":
         # Run the experiment and evaluate the models
-        model = TestModel
-        model_2 = TestModel2
-        model_3 = TestModel3
+        model = Falcon()
+        model_2 = RandomModel()
+        model_3 = RandomModel()
         experiment = Experiment(data, models=[model, model_2, model_3])
         experiment.run()
         

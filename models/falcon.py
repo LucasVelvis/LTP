@@ -1,5 +1,7 @@
+import torch
 from models.model import Model
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, pipeline
+
 
 class Falcon(Model):
     """
@@ -8,28 +10,27 @@ class Falcon(Model):
     No parameters are needed.
     """
     def __init__(self):
-        super().__init__("Falcon")
-        model_name = "tiiuae/falcon-7b-instruct"
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+        super().__init__(name="Falcon", model="tiiuae/falcon-7b-instruct")
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model)
+        self.pipeline = pipeline(
+            task="text-generation",
+            model=self.model,
+            tokenizer=self.tokenizer,
+            torch_dtype=torch.bfloat16,
+            device_map="auto",
+        )
 
     def generate_response(self, prompt):
         """
         Generates a response to some given prompt
         """
-        # Encode it
-        input = self.tokenizer.encode(prompt, return_tensors="pt")
-
-        # Generate the output
-        output = self.model.generate(input, max_length=50)
-
-        # Decode and return the output
-        self.latest_response = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        return self.latest_response
-
-# Just a quick test (takes too long to run)
-if __name__ == "__main__":
-    handler = Falcon()
-    prompt = "What's up?"
-    response = handler.generate_response(prompt)
-    print("Response:", response)
+        prompt = "Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the glorious majesty of the giraffe.\nDaniel: Hello, Girafatron!\nGirafatron:"
+        sequences = self.pipeline(
+            prompt,
+            max_length=200,
+            do_sample=True,
+            top_k=10,
+            num_return_sequences=1,
+            eos_token_id=self.tokenizer.eos_token_id,
+        )
+        return sequences[0]['generated_text']

@@ -3,6 +3,7 @@ from prompting_techniques.prompt import Prompt
 from random import shuffle
 from models.model import Model
 
+
 class FewShot(Prompt):
     """
     The few-shot prompting technique.
