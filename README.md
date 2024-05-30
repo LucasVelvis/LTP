@@ -38,8 +38,8 @@ For evaluation, this study makes use of the Gold Standard Dataset that was creat
 For constructing the "Generated Knowledge" prompts, the [knowlede_gpt3.dev.csqa] dataset created by J. Liu et al. [[2]](#2), was used, retrieved from [Github](https://github.com/liujch1998/GKP).
 
 ## Model Acknowledgements
-- Falcon-7b LLM by E. Almazrouei et al. [[3]](#3).
-- ...
+- Falcon-7b LLM by E. Almazrouei et al. [[3]](#3)
+- Zephyr-7b LLM by L. Tunstall et al. [[4]](#4)
 
 ## References
 <a id="1">[1]</a> 
@@ -50,3 +50,6 @@ J. Liu et al., ‘Generated knowledge prompting for commonsense reasoning’, ar
 
 <a id="3">[3]</a> 
 E. Almazrouei et al., “Falcon-40B: an open large language model with state-of-the-art performance,” 2023.
+
+<a id="4">[4]</a> 
+L. Tunstall et al., Zephyr: Direct Distillation of LM Alignment. 2023.
