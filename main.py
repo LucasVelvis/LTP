@@ -5,6 +5,7 @@ from prompting_techniques.automatic_cot import AutomaticCoT
 from prompting_techniques.generated_knowledge import GeneratedKnowledge
 from models.test import RandomModel
 from models.falcon import Falcon
+from models.zephyr import Zephyr
 from experiment import Experiment
 from evaluation import EvaluationFrameWork
 import sys
@@ -43,18 +44,16 @@ if __name__ == "__main__":
         print(gen_knowledge_prompt)
     elif sys.argv[1] == "experiment":
         # Just run the experiment to get the data
-        model = RandomModel()
         experiment = Experiment(data, models=[model])
         experiment.run()
     elif sys.argv[1] == "complete":
         # Run the experiment and evaluate the models
-        model = Falcon()
-        model_2 = RandomModel()
-        model_3 = RandomModel()
-        experiment = Experiment(data, models=[model, model_2, model_3])
+        model_falcon = Falcon()
+        model_zephyr = Zephyr()
+        experiment = Experiment(data, models=[model_falcon, model_zephyr])
         experiment.run()
         
-        evaluation_framework = EvaluationFrameWork(models=[model, model_2, model_3])
+        evaluation_framework = EvaluationFrameWork(models=[model_falcon, model_zephyr])
         evaluation_framework.evaluate()
         evaluation_framework.plot()
 

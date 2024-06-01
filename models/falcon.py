@@ -1,6 +1,6 @@
 import torch
 from models.model import Model
-from transformers import AutoTokenizer, pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 class Falcon(Model):
@@ -10,27 +10,35 @@ class Falcon(Model):
     No parameters are needed.
     """
     def __init__(self):
-        super().__init__(name="Falcon", model="tiiuae/falcon-7b-instruct")
+        super().__init__(name="Falcon", model="HuggingFaceH4/zephyr-7b-beta")
         self.tokenizer = AutoTokenizer.from_pretrained(self.model)
-        self.pipeline = pipeline(
-            task="text-generation",
-            model=self.model,
-            tokenizer=self.tokenizer,
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.model,
             torch_dtype=torch.bfloat16,
-            device_map="auto",
+            device_map="auto"
         )
 
     def generate_response(self, prompt):
         """
         Generates a response to some given prompt
         """
-        prompt = "Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the glorious majesty of the giraffe.\nDaniel: Hello, Girafatron!\nGirafatron:"
-        sequences = self.pipeline(
+        # Encode it
+        inputs = self.tokenizer.encode(
             prompt,
-            max_length=200,
-            do_sample=True,
-            top_k=10,
-            num_return_sequences=1,
-            eos_token_id=self.tokenizer.eos_token_id,
+            return_tensors="pt"
+        ).to("cuda")
+
+        # Generate the output
+        outputs = self.model.generate(
+            inputs,
+            max_new_tokens=100,
+            pad_token_id=self.tokenizer.eos_token_id
         )
-        return sequences[0]['generated_text']
+
+        # Decode and return the output
+        self.latest_response = self.tokenizer.decode(
+            outputs[0][inputs.shape[1]:],
+            skip_special_tokens=True
+        )
+
+        return self.latest_response

@@ -1,13 +1,13 @@
 """
 Here the experiment is defined, which consists of running all prompting techniques on all models.
 """
-
 from data import Data
 from typing import List
 from util import get_all_models, get_all_prompting_techniques
 from fallacy_extraction import extract_fallacies
 from models.model import Model
 from prompting_techniques.prompt import Prompt
+
 
 class Experiment:
     """
@@ -26,7 +26,7 @@ class Experiment:
             prompting_techniques = get_all_prompting_techniques()
 
         self.data = data
-        self.models = models    
+        self.models = models
         self.prompting_techniques = prompting_techniques
 
     def run(self):
@@ -48,9 +48,9 @@ class Experiment:
 
                     # Generate prompt
                     prompt = prompting_technique(text=text, data=self.data, model=model)
-                   
+
                     # Pass to model
-                    response = model.generate_response(prompt)
+                    response = model.generate_response(str(prompt))
 
                     # Extract fallacies from response
                     fallacies = extract_fallacies(response)

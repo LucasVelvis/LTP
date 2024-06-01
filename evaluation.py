@@ -186,4 +186,4 @@ class EvaluationFrameWork:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig("evaluation.png")
+        plt.savefig("data/evaluation.png", dpi=300)

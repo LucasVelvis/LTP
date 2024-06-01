@@ -16,7 +16,7 @@ class AutomaticCoT(Prompt):
     - level: int, the level of fallacies to cluster the data into (1 or 2) (Optional, default is 2)
     """
     def __init__(self, text: str, data: Data, model: Model, level: int = 2):
-        super().__init__("Automatic CoT", text, data, model)
+        super().__init__("Automatic-CoT", text, data, model)
         self.level = level
         self.clusters = LEVEL_1_CLUSTERS if self.level == 1 else LEVEL_2_CLUSTERS
         self.clustered_data = {cluster: [] for cluster in self.clusters}
@@ -27,6 +27,7 @@ class AutomaticCoT(Prompt):
         """
         self.cluster_data()
         self.demonstrations = self.generate_demonstrations()
+
         examples = []
         for cluster, demonstrations in self.demonstrations.items():
             if not demonstrations:
@@ -71,29 +72,9 @@ class AutomaticCoT(Prompt):
             zero_shot.additional_info = "Think step by step."
 
             # Get the model response
-            response = self.model.generate_response(zero_shot)
+            response = self.model.generate_response(str(zero_shot))
             
             # Add question + response to the demonstrations
             demonstrations[cluster].append(f"Question: {text}\nResponse: {response}")
 
         return demonstrations
-
-    
-    # def generate_reasoning(self, prompt: str, labels: list) -> str:
-    #     """
-    #     Generate a chain of thought reasoning for the given prompt and labels.
-        
-    #     Parameters:
-    #     - prompt: str, the input text
-    #     - labels: list, the list of labels for the input text
-        
-    #     Returns:
-    #     - reasoning: str, the generated chain of thought reasoning
-    #     """
-    #     reasoning_steps = []
-    #     for label in labels:
-    #         start, end, label_name = label
-    #         text_snippet = prompt[start:end]
-    #         reasoning_step = f"This indicates a {label_name} fallacy because detected '{label_name}' from index {start} to {end}: \"{text_snippet}\."
-    #         reasoning_steps.append(reasoning_step)
-    #     return " ".join(reasoning_steps)
