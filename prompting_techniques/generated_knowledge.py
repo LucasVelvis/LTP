@@ -15,15 +15,13 @@ class GeneratedKnowledge(Prompt):
     - model: Model, the model object
     """
     def __init__(self, text: str, data, model: Model):
-        super().__init__("Generated Knowledge", text, data, model)
+        super().__init__("Generated-Knowledge", text, data, model)
 
     def get_prompt_context(self) -> str:
         """ Generated knowledge prompt context"""
-        few_shot_examples = self.retrieve_few_shot_examples()
-        self.generate_knowledge(few_shot_examples)
+        self.generate_knowledge(self.retrieve_few_shot_examples())
         context = f"input: {self.text}\n knowledge: {self.knowledge}"
         return context
-    
 
     def retrieve_few_shot_examples(self):
         """Retrieve few-shot examples used as context for new knowledge generation."""
@@ -54,5 +52,3 @@ class GeneratedKnowledge(Prompt):
         response = self.model.generate_response(prompt)
 
         self.knowledge = response
-
-        

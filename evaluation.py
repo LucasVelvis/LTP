@@ -27,31 +27,25 @@ class EvaluationFrameWork:
         # Metrics we want to keep track of
         # TODO: Maybe fix this way of retrieving the names
         technique_names = [prompting_technique("Filler", "Filler", "Filler").name for prompting_technique in prompting_techniques]
-        self.precision = {model().name: {technique: 0 for technique in technique_names} for model in models}
-        self.recall = {model().name: {technique: 0 for technique in technique_names} for model in models}
-        self.f1 = {model().name: {technique: 0 for technique in technique_names} for model in models}
+        self.precision = {model.name: {technique: 0 for technique in technique_names} for model in models}
+        self.recall = {model.name: {technique: 0 for technique in technique_names} for model in models}
+        self.f1 = {model.name: {technique: 0 for technique in technique_names} for model in models}
 
     def evaluate(self, include_indices=False):
         """
         Evaluates the performance of the models.
         """
         for model in self.models:
-            model = model()
             for prompting_technique in self.prompting_techniques:
                 # Filler prompt to get the correct data
-                prompt = prompting_technique(
-                    text="Filler", data=self.gold_standard, model=model
-                )
-                print(
-                    f"Evaluating model: {model.name} for prompting technique: {prompt.name}"
-                )
+                prompt = prompting_technique(text="Filler", data=self.gold_standard, model=model)
+                print(f"Evaluating model: {model.name} for prompting technique: {prompt.name}")
                 path = f"data/responses/{model.name}_{prompt.name}.jsonl"
+
                 try:
                     data = Data(data_path=path)
                 except FileNotFoundError:
-                    print(
-                        f"Data for model: {model}, prompting technique: {prompting_technique} not found, skipping."
-                    )
+                    print(f"Data for model: {model}, prompting technique: {prompting_technique} not found, skipping.")
                     continue
 
                 # G = Gold Standard labels, P = Predicted labels
@@ -174,7 +168,7 @@ class EvaluationFrameWork:
         f1_df = pd.DataFrame(self.f1)
 
         fig, axs = plt.subplots(3, 1, figsize=(10, 8))
-        colors = ["#003f5c", "#bc5090", "#ffa600"] # Some nice colors
+        colors = ["#003f5c", "#bc5090", "#ffa600"]
 
         precision_df.plot(kind="bar", ax=axs[0], title="Precision", color=colors)
         recall_df.plot(kind="bar", ax=axs[1], title="Recall", color=colors)
@@ -182,15 +176,14 @@ class EvaluationFrameWork:
 
         for i, ax in enumerate(axs):
             ax.set_ylabel("Score")
-            ax.set_ylim(0, 1) # PLot full metric range
-            ax.legend(loc="upper right") # Legend was in the way
-            ax.set_xticklabels(ax.get_xticklabels(), rotation=0) # X-labels were rotated
+            ax.set_ylim(0, 1)  # Plot full metric range
+            ax.legend(loc="upper right")  # Legend was in the way
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=0)  # X-labels were rotated
 
-            for container in ax.containers: # Include the values on the bars
+            for container in ax.containers:  # Include the values on the bars
                 # Rounded to 2 decimals
                 ax.bar_label(container, fmt="%.2f", label_type="edge")
 
         plt.tight_layout()
-        plt.savefig("data/Evaluation.png", dpi=300)
-        plt.show()
-
+        # plt.show()
+        plt.savefig("data/evaluation.png", dpi=300)

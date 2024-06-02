@@ -12,8 +12,9 @@ class Model:
     - name: str, the name of the model.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, model: str = ""):
         self.name = name
+        self.model = model
         self.latest_response: str = ""
 
     @abstractmethod

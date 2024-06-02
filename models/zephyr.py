@@ -3,14 +3,14 @@ from models.model import Model
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
-class Falcon(Model):
+class Zephyr(Model):
     """
-    This class is used to handle the Falcon model.
+    This class is used to handle the Zephyr model.
 
     No parameters are needed.
     """
     def __init__(self):
-        super().__init__(name="Falcon", model="HuggingFaceH4/zephyr-7b-beta")
+        super().__init__(name="Zephyr", model="HuggingFaceH4/zephyr-7b-beta")
         self.tokenizer = AutoTokenizer.from_pretrained(self.model)
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model,

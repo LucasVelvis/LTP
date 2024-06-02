@@ -78,5 +78,7 @@ Output:
         
     @abstractmethod
     def get_prompt_context(self) -> str:
-        """ To be implemented by subclasses. Returns the context of the prompt specific to type of prompting technique. """
+        """
+        To be implemented by subclasses. Returns the context of the prompt specific to type of prompting technique.
+        """
         pass
