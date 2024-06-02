@@ -12,7 +12,7 @@ import sys
 
 
 if __name__ == "__main__":
-    # Default to one-shot if no argument is given
+    # Default to a complete run if no argument is given
     if len(sys.argv) == 1:
         sys.argv.append("complete")
 
@@ -56,4 +56,3 @@ if __name__ == "__main__":
         evaluation_framework = EvaluationFrameWork(models=[model_falcon, model_zephyr])
         evaluation_framework.evaluate()
         evaluation_framework.plot()
-
