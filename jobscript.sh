@@ -2,8 +2,8 @@
 #SBATCH --time=12:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --mem=16000
-#SBATCH --gres=gpu:1
+#SBATCH --mem=40000
+#SBATCH --gres=gpu:a100:1
 #SBATCH --partition=gpu
 
 module purge
