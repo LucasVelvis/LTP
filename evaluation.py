@@ -47,10 +47,14 @@ class EvaluationFrameWork:
                 except FileNotFoundError:
                     print(f"Data for model: {model}, prompting technique: {prompting_technique} not found, skipping.")
                     continue
+                
+                # Sort both data such that they are in the same order
+                data = sorted(data, key=lambda x: x[0])
+                gold_standard = sorted(self.gold_standard, key=lambda x: x[0])
 
                 # G = Gold Standard labels, P = Predicted labels
                 P = [label for _, label in data]
-                G = [label for _, label in self.gold_standard]
+                G = [label for _, label in gold_standard]
 
                 # Fix uppercase error in "Nothing" of the predicted labels
                 for p in P:
