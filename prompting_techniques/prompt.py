@@ -71,14 +71,18 @@ fallacy include:
 • intentional
 • appeal to emotion
 Sentence: "{text}"
+
+Instructions:
+The output format should always adhere to the following structure:
+[fallacy_type, start, end] for each fallacy found in the text. Where the start and end are the character indices of the span of the fallacy in the text and fallacy_type is one of the types listed above. If no fallacy is found, the output should be an empty list.
+
 {self.additional_info}
+
 Output:
 """ 
         return standard_format
         
     @abstractmethod
     def get_prompt_context(self) -> str:
-        """
-        To be implemented by subclasses. Returns the context of the prompt specific to type of prompting technique.
-        """
+        """ To be implemented by subclasses. Returns the context of the prompt specific to type of prompting technique. """
         pass

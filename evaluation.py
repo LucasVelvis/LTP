@@ -52,6 +52,14 @@ class EvaluationFrameWork:
                 P = [label for _, label in data]
                 G = [label for _, label in self.gold_standard]
 
+                # Fix uppercase error in "Nothing" of the predicted labels
+                for p in P:
+                    for label in p:
+                        if label.name == "Nothing":
+                            label.name = "nothing"
+                    # Remove exact duplicates from the predicted labels
+                    p = set(p)
+
                 precision = self.calculate_precision(P, G, include_indices)
                 recall = self.calculate_recall(P, G, include_indices)
                 f1 = self.calculate_f1_score(precision, recall)
@@ -81,19 +89,23 @@ class EvaluationFrameWork:
         - G = Gold Standard labels
         - G_minus = Gold Standard labels without the 'Nothing' label
         """
-        G_minus = [g for g in G if "Nothing" not in {label.name for label in g}]
-        if not G_minus:
-            return 1.0  # If there are no gold standard labels, recall is 1.0
-        total_score = 0
-        # Iterate over labels and sum the comparison scores
-        for g_group in G_minus:
-            max_score = 0
-            for p_group in P:
-                score = self._comparison(p_group, g_group, include_indices)
-                max_score = max(max_score, score)
-            total_score += max_score
-        # We divide by the number of labels
-        return total_score / len(G_minus)
+        total_scores = []
+
+        for P, G in zip(P, G):
+            G_minus = [g for g in G if g.name.lower() != "nothing"]
+            if not G_minus:
+                total_scores.append(1.0) # If there are no gold standard labels, recall is 1.0
+                continue
+
+            recall_scores = []
+            for g in G_minus:
+                max_score = 0
+                for p in P:
+                    score = self._comparison(p, g, include_indices)
+                    max_score = max(max_score, score)
+                recall_scores.append(max_score)
+            total_scores.append(sum(recall_scores) / len(G_minus))
+        return sum(total_scores) / len(total_scores)
 
     def calculate_precision(self, P, G, include_indices):
         """
@@ -102,18 +114,24 @@ class EvaluationFrameWork:
         This of course is the same as the recall function, but with the roles of P and G reversed.
         And we do not exclude the 'Nothing' label, as only the nothing labels in the gold standard are excluded (because it is hard to expect a model to predict 'Nothing' labels for spans).
         """
-        if not P:
-            return 1.0
-        total_score = 0
-        for p_group in P:
-            max_score = 0
-            for g_group in G:
-                score = self._comparison(p_group, g_group, include_indices)
-                max_score = max(max_score, score)
-            total_score += max_score
-        return total_score / len(P)
+        total_scores = []
+        for P, G in zip(P, G):
+            if not P:
+                total_scores.append(0) # If there are no predicted labels, precision is 0
+                continue
+            
+            precision_scores = []
+            for p in P:
+                max_score = 0
+                for g in G:
+                    score = self._comparison(p, g, include_indices)
+                    max_score = max(max_score, score)
+                precision_scores.append(max_score)                
+            total_scores.append(sum(precision_scores) / len(P))
+        return sum(total_scores) / len(total_scores)
 
-    def _comparison(self, p_labels, g_labels, include_indices):
+
+    def _comparison(self, p, g, include_indices):
         """
         Comparison score (again as given in the MAFALDA paper).
 
@@ -122,37 +140,26 @@ class EvaluationFrameWork:
         Otherwise, just compare label names.
         """
         if include_indices:
-            p_indices = set.union(*(p.indices() for p in p_labels))
-            g_indices = set.union(*(g.indices() for g in g_labels))
-            intersection = len(p_indices.intersection(g_indices))
+            intersection = len(p.indices().intersection(g.indices()))
             # In the code of the MAFALDA paper, they give three options for h (as defined in the paper): PRED_SIZE, GOLD_SIZE, and JACCARD_INDEX.
             # We choose JACCARD_INDEX (as this is their default). Which they calculate as:
             # h = len(p_indices) + len(g_indices) - intersection
-            p_length = sum(len(p.indices()) for p in p_labels)
-            g_length = sum(len(g.indices()) for g in g_labels)
-            if p_length + g_length - intersection == 0:
-                return 0
-            else:
-                h = p_length + g_length - intersection
+            # This is the same as the Jaccard index, which is the intersection divided by the union.
+            h = len(p.indices()) + len(g.indices()) - intersection
         else:
             # If we do not include indices, we just compare the label names, 
-            # so the intersection is 1 if the names are the same, 0 otherwise.
-            intersection = (
-                1
-                if self.delta([p.name for p in p_labels], [g.name for g in g_labels])
-                else 0
-            )
+            intersection = self.delta(p, g) # Intersection is 1 if the names are the same, 0 otherwise.
             h = 1
 
         # Compare the labels
-        delta = self.delta([p.name for p in p_labels], [g.name for g in g_labels])
+        delta = self.delta(p, g)
         return (intersection / h) * delta
 
-    def delta(self, labels1, labels2):
+    def delta(self, label1, label2):
         """
         Similarity function (as given in the MAFALDA paper).
         """
-        return int(any(label in labels2 for label in labels1))
+        return label1.name.lower() == label2.name.lower()
 
     def plot(self):
         """
