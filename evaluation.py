@@ -94,7 +94,7 @@ class EvaluationFrameWork:
         for P, G in zip(P, G):
             G_minus = [g for g in G if g.name.lower() != "nothing"]
             if not G_minus:
-                total_scores.append(1.0) # If there are no gold standard labels, recall is 1.0
+                total_scores.append(1.0)  # If there are no gold standard labels, recall is 1.0
                 continue
 
             recall_scores = []
@@ -117,7 +117,7 @@ class EvaluationFrameWork:
         total_scores = []
         for P, G in zip(P, G):
             if not P:
-                total_scores.append(0) # If there are no predicted labels, precision is 0
+                total_scores.append(0)  # If there are no predicted labels, precision is 0
                 continue
             
             precision_scores = []
@@ -148,7 +148,7 @@ class EvaluationFrameWork:
             h = len(p.indices()) + len(g.indices()) - intersection
         else:
             # If we do not include indices, we just compare the label names, 
-            intersection = self.delta(p, g) # Intersection is 1 if the names are the same, 0 otherwise.
+            intersection = self.delta(p, g)  # Intersection is 1 if the names are the same, 0 otherwise.
             h = 1
 
         # Compare the labels

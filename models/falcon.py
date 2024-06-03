@@ -31,7 +31,7 @@ class Falcon(Model):
         # Generate the output
         outputs = self.model.generate(
             inputs,
-            max_new_tokens=100,
+            max_new_tokens=50,
             pad_token_id=self.tokenizer.eos_token_id
         )
 
