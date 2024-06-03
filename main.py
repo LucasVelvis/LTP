@@ -46,6 +46,11 @@ if __name__ == "__main__":
         # Just run the experiment to get the data
         experiment = Experiment(data, models=[model])
         experiment.run()
+    elif sys.argv[1] == "evaluate":
+        # Evaluate the model
+        evaluation_framework = EvaluationFrameWork()
+        evaluation_framework.evaluate()
+        evaluation_framework.plot()
     elif sys.argv[1] == "complete":
         # Run the experiment and evaluate the models
         model_falcon = Falcon()

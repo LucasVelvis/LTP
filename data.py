@@ -30,8 +30,16 @@ class Label:
     def __repr__(self) -> str:
         return self.name + " (" + str(self.start) + ", " + str(self.end) + ")"
     
+    def __eq__(self, other):
+        return self.start == other.start and self.end == other.end and self.name == other.name
+    
+    def __hash__(self):
+        return hash((self.start, self.end, self.name))
+    
     def indices(self) -> tuple:
         """ Return the indices in range format."""
+        if self.start == -1 and self.end == -1:
+            return set()
         return set(range(self.start, self.end + 1))
 
 class Data(Dataset):
