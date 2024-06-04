@@ -17,9 +17,10 @@ For running the code there are several options:
 `python3 main.py [technique]`.
     - `[technique]` options: `zero_shot`, `few_shot`, `auto_cot`, `gen_knowledge`.
 - Just run the experiment: `python3 main.py experiment`.
-- Run the experiment including evaluation (with F1-score): `python3 main.py complete`.
+- Run the experiment including evaluation (with F1-score and confusion matrices): `python3 main.py complete` (very computationally intensive).
+- Run only the evaluation: `python3 main.py evaluate`
 
-Simply running `python3 main.py` will default to the `complete` run.
+Simply running `python3 main.py` will default to the `evaluate` run.
 
 ## General Implementation
 The main models around which this project is built are the Large Language Models given in `models` and the prompting techniques in the folder `prompting techniques`. Each containing a template superclass in `model.py` and `prompt.py` respectively. The `standard_format` of the prompt superclass is based on the prompts provided in the MAFALDA paper [[1]](#1).

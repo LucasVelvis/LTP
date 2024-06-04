@@ -14,7 +14,7 @@ import sys
 if __name__ == "__main__":
     # Default to a complete run if no argument is given
     if len(sys.argv) == 1:
-        sys.argv.append("complete")
+        sys.argv.append("evaluate")
 
     # Load the data
     data = Data()
