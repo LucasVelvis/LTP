@@ -24,7 +24,8 @@ class FewShot(Prompt):
         shuffle(self.data.data)
         for i in range(self.num_examples):
             prompt, labels = self.data[i]
-            output = [f"{labels.name} ({labels.start}, {labels.end})" for labels in labels]
-            labeled_prompt = f"text: {prompt}\n output: {output}"
-            examples.append(labeled_prompt)
+            if prompt != self.text: # Do not include the prompt itself if it is sampled
+                output = [f"{labels.name} ({labels.start}, {labels.end})" for labels in labels]
+                labeled_prompt = f"text: {prompt}\n output: {output}"
+                examples.append(labeled_prompt)
         return "\n".join(examples)
