@@ -64,17 +64,26 @@ class AutomaticCoT(Prompt):
         for cluster, data in self.clustered_data.items():
             if not data:
                 continue
-            shuffle(data)
-            text, label = data[0]
-
-            # We use a simple modification of Zero-Shot for Zero-Shot CoT
-            zero_shot = ZeroShot(text, self.data, self.model)
-            zero_shot.additional_info = "Think step by step."
-
-            # Get the model response
-            response = self.model.generate_response(str(zero_shot))
             
-            # Add question + response to the demonstrations
-            demonstrations[cluster].append(f"Question: {text}\nResponse: {response}")
+            # Make sure the prompt does not occur in the demonstrations
+            # And avoid infinite loop
+            text = self.text
+            iteration = 0
+            while text == self.text and iteration < 10:
+                shuffle(data)
+                text, label = data[0]
+                iteration += 1
+            
+            # If we did not find a suitable question, skip the cluster
+            if iteration != 10:
+                # We use a simple modification of Zero-Shot for Zero-Shot CoT
+                zero_shot = ZeroShot(text, self.data, self.model)
+                zero_shot.additional_info = "Think step by step."
+
+                # Get the model response
+                response = self.model.generate_response(str(zero_shot))
+                
+                # Add question + response to the demonstrations
+                demonstrations[cluster].append(f"Question: {text}\nResponse: {response}")
 
         return demonstrations
